@@ -19,7 +19,7 @@ import javax.swing.JOptionPane;
 public class Vista extends javax.swing.JFrame {
 
     String defaultdir = "/home/charles/NetBeansProjects/GestorArchivo/home";
-
+    String tree = "";
     /**
      * Creates new form Vista
      */
@@ -211,6 +211,13 @@ public class Vista extends javax.swing.JFrame {
                     }
                 }
                 break;
+            case "tree":
+                File dir = new File(defaultdir);
+                tree(dir, defaultdir);
+                //System.out.println(tree);
+                imprime(tree);
+                tree="";
+                break;
 
             case "copy":
                 if (splits.length == 3) {
@@ -245,25 +252,25 @@ public class Vista extends javax.swing.JFrame {
                             archCopy.delete();
                         }
                         System.out.println(archCopy.exists());
-                        
+
                     } else {
                         JOptionPane.showMessageDialog(null, "No existe el archivo");
                     }
-                    
+
                 }
                 break;
             case "remove":
-               File fileRemove = new File(defaultdir, splits[1]);
+                File fileRemove = new File(defaultdir, splits[1]);
                 if (fileRemove.exists()) {
                     fileRemove.delete();
                     imprime("Borrado " + splits[2]);
-                }else{
-                JOptionPane.showMessageDialog(null, "No existe el archivo");
+                } else {
+                    JOptionPane.showMessageDialog(null, "No existe el archivo");
                 }
                 break;
             case "cd":
                 String tmp = splits[1];
-                defaultdir =defaultdir +"/"+ tmp;
+                defaultdir = defaultdir + "/" + tmp;
                 System.out.println(defaultdir);
                 break;
             case "rt":
@@ -273,6 +280,31 @@ public class Vista extends javax.swing.JFrame {
         jTextField1.setText("");
     }
 
+    public void tree(File dir, String direccion) {
+        String[] ficheros = dir.list();
+        //String temp = "";
+        if (ficheros == null) {
+            System.out.println("Nel prra, nel");
+
+        } else {
+            for (int i = 0; i < ficheros.length; i++) {
+                String direccionTemp = direccion + "/" + ficheros[i];
+                //temp = temp + ficheros[i] + "\n";
+                
+                String [] tmp2 = direccionTemp.split("/home/charles/NetBeansProjects/GestorArchivo/home/");
+                //System.out.println( tmp2[1] );
+                tree = tree + tmp2[1]+"\n";
+                File fileTemp = new File(direccion, ficheros[i]);
+                if (fileTemp.isDirectory()) {
+
+                    tree(fileTemp, direccion + "/" + ficheros[i]);
+                }
+            }
+        }
+        //System.out.println(tree);
+        //imprime(tree);
+        //tree = "";
+    }
     private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
 
         if (evt.getKeyCode() == 10) {
@@ -289,13 +321,13 @@ public class Vista extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1KeyPressed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-                JOptionPane.showMessageDialog(null, "crdir = crear Carpetas\n"+
-                        "crfile = crear Archivo\n"+
-                        "cd = Acceder a carpeta\n"+
-                        "copy = Copiar archivo\n"+
-                        "remove = Borrar\n"+
-                        "move = Mover\n"+
-                        "rt = Regreso a carpeta raiz");
+        JOptionPane.showMessageDialog(null, "crdir = crear Carpetas\n"
+                + "crfile = crear Archivo\n"
+                + "cd = Acceder a carpeta\n"
+                + "copy = Copiar archivo\n"
+                + "remove = Borrar\n"
+                + "move = Mover\n"
+                + "rt = Regreso a carpeta raiz");
 
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
